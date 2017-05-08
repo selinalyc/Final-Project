@@ -1,0 +1,42 @@
+#include <Adafruit_NeoPixel.h>
+#define PIN            6
+#define NUMPIXELS      16
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+#define LEDstrip 9
+void setup()
+{
+  pinMode(7, INPUT); //SIG of the Parallax Sound Impact Sensor connected to Digital Pin 7
+  pinMode(LEDstrip, OUTPUT);
+
+  pixels.begin(); // This initializes the NeoPixel library.
+
+}
+
+//this function will make the LED dim once the Parallax Sound Impact Sensor sends a 1 signal, and then return to it’s original brightness.
+void loop()
+{
+  int sensorValue = analogRead(A0);
+  int r= random(0,255);
+  int g= random(0,255);
+  int b= random(0,255);
+  if (sensorValue > 550) {
+    for (int i = 0; i < NUMPIXELS; i++) {
+
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(r, g, b)); 
+
+      pixels.show(); // This sends the updated pixel color to the hardware.
+    }
+    delay(10);
+  }
+  else {
+    for (int i = 0; i < NUMPIXELS; i++) {
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(0, 0, 0)); // Moderately bright green color.
+
+      pixels.show(); // This sends the updated pixel color to the hardware.
+    }
+  }
+}
